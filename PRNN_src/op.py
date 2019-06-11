@@ -56,7 +56,8 @@ class Operator:
                 loss.backward()
                 self.optimizer.step()
                 print('Epoch: {:03d}/{:03d}, Iter: {:03d}/{:03d}, Loss: {:5f}'
-                      .format(epoch, self.config.epochs, batch_idx, train_batch_num, loss.item()))
+                      .format(epoch, self.config.epochs, batch_idx,
+                              train_batch_num, loss.item()))
 
                 # use tensorboard
                 if self.tensorboard:
@@ -67,17 +68,15 @@ class Operator:
             # use tensorboard
             if self.tensorboard:
                 print(self.optimizer.get_lr(), epoch)
-                self.summary_writer.add_scalar('epoch_lr', self.optimizer.get_lr(), epoch)
+                self.summary_writer.add_scalar('epoch_lr',
+                                               self.optimizer.get_lr(), epoch)
 
-            # save model
-            self.save(self.ckpt, epoch)
-
-            # test model
-            if (epoch % 10) == 1:
+            # test model & save model
+            self.optimizer.schedule()
+            if (epoch % 50) == 1:
+                self.save(self.ckpt, epoch)
                 self.test()
                 self.model.train()
-
-        self.summary_writer.close()
 
         self.summary_writer.close()
 
@@ -114,7 +113,6 @@ class Operator:
         self.optimizer.load(ckpt) # load optimizer
 
     def save(self, ckpt, epoch):
-        self.optimizer.schedule()
         ckpt.save(epoch) # save ckpt: global_step, last_epoch
         self.model.save(ckpt, epoch) # save model: weight
         self.optimizer.save(ckpt) # save optimizer:
