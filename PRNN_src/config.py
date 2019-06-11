@@ -14,23 +14,23 @@ parser.add_argument("--num_gpu", type=int, default=1)
 parser.add_argument("--exp_dir", type=str, default="../PRNN_exp")
 
 # Data
-parser.add_argument("--data_dir", type=str, default="~/Data")
+parser.add_argument("--data_dir", type=str, default="/mnt/sda")
 parser.add_argument("--data_name", type=str, default="epiano")
 parser.add_argument("--data_type",  default='event', choices=('event', 'note'))
 parser.add_argument('--batch_size', type=int, default=2)
 parser.add_argument('--window_size', type=int, default=150)
 
 # Model
-parser.add_argument('--cell', default='lstm', choices=('lstlm', 'gru'))
+parser.add_argument('--cell', default='lstm', choices=('lstm', 'gru'))
 parser.add_argument('--n_dict', type=int, default=256)
 parser.add_argument('--n_hidden', type=int, default=100)
 parser.add_argument('--n_layers', type=int, default=2)
 
 # Train
 parser.add_argument("--epochs", type=int, default=1000)
-parser.add_argument("--lr", type=float, default=1e-4)
 parser.add_argument("--decay", type=str, default='500-500')
-parser.add_argument("--gamma", type=float, default=0.98)
+parser.add_argument("--lr", type=float, default=1e-4)
+parser.add_argument("--gamma", type=float, default=0.5)
 parser.add_argument("--optimizer", type=str, default='adam')
 parser.add_argument("--weight_decay", type=float, default=0.)
 parser.add_argument("--momentum", type=float, default=0.9)

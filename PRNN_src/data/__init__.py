@@ -67,6 +67,14 @@ class MidiData:
             save_name = os.path.join(save_path, out_fmt.format(name, code))
             torch.save(event_data, save_name)
 
+    @staticmethod
+    def Note2Midi(preds, save_path, velocity_scale=0.8):
+        pass
+
+    @staticmethod
+    def Midi2Event(config):
+        pass
+
 
 
 # ==================================================================================
