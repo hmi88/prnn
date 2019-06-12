@@ -2,7 +2,7 @@
 PRNN_exp
 PRNN_ppt
 PRNN_ref
-PRNN_master
+PRNN-master
 *.pyc
 .idea
 *.xml
