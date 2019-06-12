@@ -42,6 +42,7 @@ class MidiData:
     @staticmethod
     def Midi2Event(config):
         data_path = os.path.join(config.data_dir, config.data_name, 'midi')
+        print(data_path)
         save_path = os.path.join(config.data_dir, config.data_name, config.data_type)
         midi_paths = list(find_files_by_extensions(data_path, ['.mid', '.midi']))
         os.makedirs(save_path, exist_ok=True)
@@ -68,11 +69,11 @@ class MidiData:
             torch.save(event_data, save_name)
 
     @staticmethod
-    def Note2Midi(preds, save_path, velocity_scale=0.8):
+    def Note2Note(preds, save_path, velocity_scale=0.8):
         pass
 
     @staticmethod
-    def Midi2Event(config):
+    def Midi2Note(config):
         pass
 
 

@@ -14,7 +14,7 @@ parser.add_argument("--num_gpu", type=int, default=1)
 parser.add_argument("--exp_dir", type=str, default="../PRNN_exp")
 
 # Data
-parser.add_argument("--data_dir", type=str, default="/mnt/sda")
+parser.add_argument("--data_dir", type=str, default="~/Data")
 parser.add_argument("--data_name", type=str, default="epiano")
 parser.add_argument("--data_type",  default='event', choices=('event', 'note'))
 parser.add_argument('--batch_size', type=int, default=2)
