@@ -111,8 +111,8 @@ DEFAULT_NOTE_DENSITY_BINS = np.arange(12) * 3 + 1
 # Notes
 # ==================================================================================
 
-class NoteSeq:
 
+class NoteSeq:
     @staticmethod
     def from_midi(midi, programs=DEFAULT_LOADING_PROGRAMS):
         notes = itertools.chain(*[
@@ -193,8 +193,8 @@ class NoteSeq:
 # Events
 # ==================================================================================
 
-class Event:
 
+class Event:
     def __init__(self, type, time, value):
         self.type = type
         self.time = time
@@ -204,8 +204,8 @@ class Event:
         return 'Event(type={}, time={}, value={})'.format(
             self.type, self.time, self.value)
 
-class EventSeq:
 
+class EventSeq:
     pitch_range = DEFAULT_PITCH_RANGE
     velocity_range = DEFAULT_VELOCITY_RANGE
     velocity_steps = DEFAULT_VELOCITY_STEPS
@@ -362,7 +362,6 @@ class EventSeq:
 # ==================================================================================
 
 class Control:
-
     def __init__(self, pitch_histogram, note_density):
         self.pitch_histogram = pitch_histogram  # list
         self.note_density = note_density  # int
@@ -379,7 +378,6 @@ class Control:
         return np.concatenate([ndens, phist], 0)  # [dens_dim + hist_dim]
 
 class ControlSeq:
-
     note_density_bins = DEFAULT_NOTE_DENSITY_BINS
     window_size = DEFAULT_WINDOW_SIZE
 
