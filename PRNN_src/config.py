@@ -12,9 +12,10 @@ parser.add_argument('--cpu', action='store_true', help='use cpu only')
 parser.add_argument("--gpu", type=int, default=0)
 parser.add_argument("--num_gpu", type=int, default=1)
 parser.add_argument("--exp_dir", type=str, default="../PRNN_exp")
+parser.add_argument("--exp_load", type=str, default=None)
 
 # Data
-parser.add_argument("--data_dir", type=str, default="~/Data")
+parser.add_argument("--data_dir", type=str, default="/mnt/sda")
 parser.add_argument("--data_name", type=str, default="epiano")
 parser.add_argument("--data_type",  default='event', choices=('event', 'note'))
 parser.add_argument('--batch_size', type=int, default=48)

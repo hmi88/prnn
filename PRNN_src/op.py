@@ -5,7 +5,7 @@ from torch.utils.tensorboard import SummaryWriter
 
 from model import *
 from loss import Loss
-from util import make_optimizer
+from util import make_optimizer, summary
 import data
 
 class Operator:
@@ -22,11 +22,14 @@ class Operator:
 
         # set model, criterion, optimizer
         self.model = Model(config)
+        summary(self.model, config_file=self.ckpt.config_file)
+
+        # set criterion, optimizer
         self.criterion = Loss(config)
         self.optimizer = make_optimizer(config, self.model)
 
         # load ckpt, model, optimizer
-        if config.is_resume or not config.is_train:
+        if self.ckpt.exp_load is not None or not config.is_train:
             print("Loading model... ")
             self.load(self.ckpt)
             print(self.ckpt.last_epoch, self.ckpt.global_step)

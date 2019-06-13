@@ -2,6 +2,7 @@ import os
 import math
 import sys
 from functools import reduce
+from datetime import datetime
 
 import torch
 import torch.optim as optim
@@ -15,16 +16,29 @@ class Checkpoint:
         self.last_epoch = 0
         self.config = config
         self.exp_dir = config.exp_dir
+        self.exp_load = config.exp_load
         exp_type = config.data_type
+        now = datetime.now().strftime('%m%d_%H%M')
 
-        self.model_dir = os.path.join(self.exp_dir, exp_type, 'model')
-        self.log_dir = os.path.join(self.exp_dir, exp_type, 'log')
-        self.save_dir = os.path.join(self.exp_dir, exp_type, 'save')
+        if config.exp_load is None:
+            dir_fmt = '{}_{}'.format(exp_type, now, config)
+        else:
+            dir_fmt = '{}_{}'.format(exp_type, self.exp_load, config)
+
+        self.model_dir = os.path.join(self.exp_dir, dir_fmt, 'model')
+        self.log_dir = os.path.join(self.exp_dir, dir_fmt, 'log')
+        self.save_dir = os.path.join(self.exp_dir, dir_fmt, 'save')
         self.ckpt_dir = os.path.join(self.log_dir, 'ckpt.pt')
 
         os.makedirs(self.model_dir, exist_ok=True)
         os.makedirs(self.log_dir, exist_ok=True)
         os.makedirs(self.save_dir, exist_ok=True)
+
+        # save config
+        self.config_file = os.path.join(self.log_dir, 'config.txt')
+        with open(self.config_file, 'w') as f:
+            for k, v in vars(config).items():
+                f.writelines('{}: {} \n'.format(k, v))
 
     def step(self):
         self.global_step += 1
@@ -107,3 +121,50 @@ def find_files_by_extensions(root, exts=[]):
         for name in files:
             if _has_ext(name):
                 yield os.path.join(path, name)
+
+
+def summary(model, config_file, file=sys.stdout):
+    def repr(model):
+        # We treat the extra repr like the sub-module, one item per line
+        extra_lines = []
+        extra_repr = model.extra_repr()
+        # empty string will be split into list ['']
+        if extra_repr:
+            extra_lines = extra_repr.split('\n')
+        child_lines = []
+        total_params = 0
+        for key, module in model._modules.items():
+            mod_str, num_params = repr(module)
+            mod_str = _addindent(mod_str, 2)
+            child_lines.append('(' + key + '): ' + mod_str)
+            total_params += num_params
+        lines = extra_lines + child_lines
+
+        for name, p in model._parameters.items():
+            if hasattr(p, 'shape'):
+                total_params += reduce(lambda x, y: x * y, p.shape)
+
+        main_str = model._get_name() + '('
+        if lines:
+            # simple one-liner info, which most builtin Modules will use
+            if len(extra_lines) == 1 and not child_lines:
+                main_str += extra_lines[0]
+            else:
+                main_str += '\n  ' + '\n  '.join(lines) + '\n'
+
+        main_str += ')'
+        if file is sys.stdout:
+            main_str += ', \033[92m{:,}\033[0m params'.format(total_params)
+        else:
+            main_str += ', {:,} params'.format(total_params)
+        return main_str, total_params
+
+    string, count = repr(model)
+    print(string, file=open(config_file, 'a'))
+
+    if file is not None:
+        print(string, file=sys.stdout)
+        file.flush()
+
+    return count
+
