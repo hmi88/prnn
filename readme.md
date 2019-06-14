@@ -57,7 +57,7 @@ python train.py --data_type "event"
 python train.py --is_train false --data_type "note"
 
 # Event based
-python train.py --is_train false --data_type "Event"
+python train.py --is_train false --data_type "event"
 ```
 
 
