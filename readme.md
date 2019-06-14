@@ -16,24 +16,18 @@ Pytorch implementation of [Performance RNN](https://magenta.tensorflow.org/perfo
 
 ```
 # Data Tree
-config.data_dir
+config.data_dir/
 └── config.data_name/
-        └── midi/
-        │     └── *.mid
-        ├── event/ # processed
-        │     └── *.data/
-        └── note/  # processed 
-                └── *.data/
+        ├── midi/ *.mid
+        ├── note/ *.data  # processed 
+        └── event/ *.data # processed
   
 # Project Tree
 PRNN
 ├── PRNN_src/
-│       ├── data/
-│       │     └── *.py
-│       ├── loss/
-│       │     └── *.py
-│       ├── model/
-│       │     └── *.py
+│       ├── data/ *.py
+│       ├── loss/ *.py
+│       ├── model/ *.py
 │       └── *.py
 └── PRNN_exp/
          ├── log/
