@@ -1,8 +1,10 @@
 .DS_Store
+.idea
+
 PRNN_exp
 PRNN_ppt
 PRNN_ref
-PRNN-master
+PRNN_plan.md
+
 *.pyc
-.idea
 *.xml
